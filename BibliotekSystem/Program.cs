@@ -1,31 +1,60 @@
-﻿using System;
-
-namespace BibliotekSystem // Note: actual namespace depends on the project name.
+﻿namespace BibliotekSystem // Note: actual namespace depends on the project name.
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Bibliotek");
 
-            //Bog bog = new Bog();
             Bibliotek bib = new Bibliotek();
 
+            bib.AddBooks();
+
+
+            // MENU
+        repeat:
+            Console.WriteLine("\n| (1)Bog | (2)Forfatter | (3)Låne Bog | (4)Aflevere Bog |(5)Bog Info ");
+            Console.Write("Input: ");
+            int x = Convert.ToInt32(Console.ReadLine());
+
+
+            switch (x)
+            {
+                case 1:
+                    bib.TilføjBog();
+                    break;
+                case 2:
+                    bib.TilføjForfatter();
+                    break;
+                case 3:
+                    bib.LåneBog();
+                    break;
+                case 4:
+                    bib.AflevereBog();
+                    break;
+                case 5:
+                    bib.FåBogInfo();
+                    break;
+                default:
+                    Console.WriteLine("Forkert input! Prøve igen!");
+                    Console.ReadKey();
+                    Console.Clear();
+                    goto repeat;
+                    break;
+            }
 
         }
 
         public class Forfatter
 
         {
-
+            // properties
             public string Navn { get; set; }
 
             public string Nationalitet { get; set; }
 
-            public int Fødselsår { get; set; }  
+            public int Fødselsår { get; set; }
 
-
-            // Andre egenskaber for forfatteren
 
 
 
@@ -44,56 +73,34 @@ namespace BibliotekSystem // Note: actual namespace depends on the project name.
         public class Bog
 
         {
-
+            //Bogen egenskaber/properties
             public string Titel { get; set; }
 
             public string Forfatter { get; set; }
 
-            public string Udgivelsesår { get; set; }
+            public int Udgivelsesår { get; set; }
 
-            public bool erTilgænglige { get; set; } = true;
+            public int Sider { get; set; }
 
+            public bool erLånt { get; set; } = true;
             // Andre egenskaber for bogen
 
 
+            // Konstruktør/constructor
 
-            // Konstruktør
-
-            public Bog()
-
+            public Bog(string titel, string forfatter, int udgivelsesår, int sider, bool erL)
             {
-                Bog bog1 = new Bog();
-                {
-                    Titel = "Harry Potter and the Philosopher's Stone";
-                    Forfatter = "J.K Rowling";
-                    Udgivelsesår = "1997";
-                }
-                Bog bog2 = new Bog();
-                {
-                    Titel = "To Kill a Mockingbird";
-                    Forfatter = "Harper Lee";
-                    Udgivelsesår = "1960";
-                }
-                Bog bog3 = new Bog();
-                {
-                    Titel = "The Great Gatsby";
-                    Forfatter = "F. Scott Fitzgerald";
-                    Udgivelsesår = "1925";
-                }
-                Bog bog4 = new Bog();
-                {
-                    Titel = "Pride and Prejudice";
-                    Forfatter = "Jane Austen";
-                    Udgivelsesår = "1813";
-                }
-                Bog bog5 = new Bog();
-                {
-                    Titel = "The Catcher in the Rye";
-                    Forfatter = "J.D Salinger";
-                    Udgivelsesår = "1951";
-                }
+                Titel = titel;
+                Forfatter = forfatter;
+                Udgivelsesår = udgivelsesår;
+                Sider = sider;
+                erLånt = erL;
 
+            }
 
+            public void Om()
+            {
+                Console.WriteLine($"Titel: {Titel} \nForfatter: {Forfatter} \nAntal Sider: {Sider} \nUdgivelsesår: {Udgivelsesår}");
             }
 
         }
@@ -101,96 +108,314 @@ namespace BibliotekSystem // Note: actual namespace depends on the project name.
         public class Bibliotek
 
         {
-
+            
+            // Bøger Liste
             private List<Bog> bøger = new List<Bog>(); // En liste til at gemme bøger
 
+            //Forfatter Dictionary 
             private Dictionary<string, Forfatter> forfattere = new Dictionary<string, Forfatter>(); // Et dictionary til at gemme forfattere
 
-            
-
-            public void TilføjBog(Bog bog)
-
+            public void AddBooks()
             {
+                //Tilføjer eksta bøger til listen
+                bøger.Add(new Bog("Harry Potter and the Philosopher's Stone", "J.K Rowling", 1997, 223, true));
+                bøger.Add(new Bog("To Kill a Mockingbird", "Harper Lee", 1960, 285, false));
+                bøger.Add(new Bog("The Great Gatsby", "F. Scott Fitzgerald", 1925, 208, false));
+                bøger.Add(new Bog("Pride and Prejudice", "Jane Austen", 1813, 273, false));
+                bøger.Add(new Bog("The Catcher in the Rye", "J.D Salinger", 1951, 234, false));
+            }
 
-                bøger.Add(bog);
+            public void TilføjBog()
+            {
+                
 
-                //bøger.ForEach(Console.WriteLine);
-                foreach (var Bog in bøger)
+            //Bog Menu  
+            repeat:
+                Console.WriteLine("Tilføj Bog(1) |\tVis Bøger(2)");
+                Console.Write("Input: ");
+                string valg = Console.ReadLine();
+                Console.Clear();
+
+                if (valg == "1")
                 {
-                    Console.WriteLine(Bog);
+                    Console.Clear();
+
+                    Console.WriteLine("Tilføj bog");
+
+                    Console.Write("Titel: ");
+                    string Titel = Console.ReadLine();
+
+                    Console.Write("Forfatter: ");
+                    string Forfatter = Console.ReadLine();
+
+                    Console.Write("Udgivelsesår: ");
+                    int Udgivelsesår = Convert.ToInt32(Console.ReadLine());
+
+                    Console.Write("Antal Sider: ");
+                    int Sider = Convert.ToInt32(Console.ReadLine());
+
+                    Console.WriteLine("Bogen er Tilføjet!");
+
+                    bøger.Add(new Bog(Titel, Forfatter, Udgivelsesår, Sider, true));
+
+                    Console.ReadKey();
+                    Console.Clear();
+
+                    goto repeat;
+                }
+                if (valg == "2")
+                {
+
+                    foreach (var Bog in bøger)
+                    {
+                        if(Bog.erLånt == false)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.WriteLine(Bog.Titel);
+                            Console.ResetColor();
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            Console.WriteLine(Bog.Titel);
+                            Console.ResetColor();
+                        }
+                       
+                    }
+                    
+                }
+                else if (valg != "1" && valg != "2")
+                {
+                    Console.WriteLine("Forkert input! Tryk enter for at Prøve igen");
+                    Console.ReadKey();
+                    Console.Clear();
+                    goto repeat;
                 }
 
-                
             }
 
-
-
-            public void TilføjForfatter(Forfatter forfatter)
-
+            public void TilføjForfatter()
             {
+                //inserted data forfattere
+                Forfatter[] forfatter =
+                        {     
+                    //data
+                    new Forfatter("J.K Rowling", "Britisk", 1965),
+                    new Forfatter("Harper Lee", "Amerikansk", 1926),
+                    new Forfatter("F. Scott Fitzgerald", "Amerikansk", 1896),
+                    new Forfatter("Jane Austen", "Britisk", 1775),
+                    new Forfatter("J.D Salinger", "Amerikansk", 1919)
+                };
 
-                forfattere[forfatter.Navn] = forfatter;
+                //tilføjer til dictionary
+                foreach (Forfatter items in forfatter)
+                {
+                    forfattere.Add(items.Navn, items);
+                }
 
-            }
+                //Input
 
+                Console.Clear();
 
+                repeat:
+                Console.WriteLine("(1)Tilføj Forfatter | (2)Find Forfatter");
+                Console.Write("valg: ");
+                int valg = int.Parse(Console.ReadLine());
 
-            public void LåneBog(string bogTitel)
+                if (valg == 1)
+                {
+                    Console.Write("Navn: ");
+                     string Navn = Console.ReadLine();
 
-            {
-                //Bog bog = new Bog();
-                //// Implementer logik for at låne en bog her
+                    Console.Write("Nationalitet: ");
+                    string Nationalitet = Console.ReadLine();
+
+                    Console.Write("Fødselsår: ");
+                    int Fødsel = Convert.ToInt32(Console.ReadLine());
+
+                    // tilføjer user inputs til dictionary
+                    forfattere.Add(Navn, new Forfatter(Navn, Nationalitet, Fødsel));
+
+                    //!!! SOLVE PROBLEM: Show the new added inputs in display array
+                    
+                    //forfatter.Append(new Forfatter(Navn, Nationalitet, Fødsel)).ToArray();
+
+                    // message
+                    Console.WriteLine("Forfatteren er Tilføjet!");
+                    Console.ReadKey();
+                    Console.Clear();
+                    goto repeat;
+
+                }
+
+                // Find info om forfatteren
+                if (valg == 2)
+                {
                  
-                //if (bogTitel == null)
-                //{
-                //    Console.WriteLine("Bogen ikke fundet!");
-                //    return;
-                //}
-                
-                //if (!bog.erTilgænglige)
-                //{
-                //    Console.WriteLine("Bogen er allerede lånt!");
-                //    return;
-                //}
+                    foreach (Forfatter items in forfatter)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Console.WriteLine($"{items.Navn}");
+                        Console.ResetColor();
+                    }
+                    Console.WriteLine("");
+                    repeat2:
+                    Console.Write("Find Info om forfatter: ");
+                    string fnavn = Console.ReadLine();
 
-                //bog.erTilgænglige = false;
-                //Console.WriteLine("Tilykke! du har lånt bogen");
+                    foreach (Forfatter items in forfatter)
+                    {
+                        // if dictionary key contains (_name_)
+                        if (forfattere.ContainsKey(fnavn))
+                        {
+                            Forfatter ft = forfattere[fnavn];
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nFUNDET!!");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"\nNavn: {ft.Navn} \nNationalitet: {ft.Nationalitet} \nFølsesår: {ft.Fødselsår} \n");
+                            Console.ResetColor();
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Forfatteren findes ikke! Prøve igen.");
+                            Console.ReadKey();
+                            Console.Clear();
+                            goto repeat2;
+                        }
 
+                    }
+                }
+               
             }
 
 
 
-            public void AflevereBog(string bogTitel)
-
+            public void LåneBog()
             {
-                //Bog bog = new Bog();
-                //// Implementer logik for at aflevere en bog her
+            igen:
+                Console.Clear();
+                Console.Write("Lån en bog: ");
+                string bogen = Console.ReadLine();
 
-                //if (bogTitel == null)
-                //{
-                //    Console.WriteLine("Bogen ikke fundet!");
-                //    return;
-                //}
+                foreach (var Bog in bøger)
+                {
+                    if (Bog.Titel.Contains(bogen))
+                    {
+                        string x = Bog.Titel;
 
-                //if (bog.erTilgænglige)
-                //{
-                //    Console.WriteLine("bogen er tilgænglige");
-                //}
+                        if (Bog.erLånt != true)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"\n'{x}' er KLAR til lån!");
+                            Console.ResetColor();
+                            Console.WriteLine(Bog.erLånt);
 
-                //bog.erTilgænglige = true;
-                //Console.WriteLine("Tak for at du aflevere bogen!");
+                            Console.WriteLine("\n1(Ja) | 2(Nej) | 3(Afslut)");
+                            Console.Write("\nVil du låne bogen? ");
+                            int y = Convert.ToInt32(Console.ReadLine());
+
+                            switch (y)
+                            {
+                                case 1:
+                                    Console.WriteLine("Tillykke du har lånt bogen!");
+                                    Bog.erLånt = true;
+                                    Console.WriteLine(Bog.erLånt);
+                                    
+                                    break;
+                                case 2:
+                                    goto igen;
+                                    Console.Clear();
+
+                                    break;
+                                case 3:
+                                    Console.WriteLine("Tyk for at Afslutte");
+                                    Console.ReadKey();
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"\n'{x}' er LÅNT!");
+                            Console.ResetColor();
+                            Console.ReadKey();
+                            goto igen;
+                        }
+                    }
+                      
+                }
+                // ELSE FEJL!!! SOLVE PROBLEM
+
+                //Console.ForegroundColor = ConsoleColor.DarkRed;
+                //Console.WriteLine($"'{bogen}' FINDES IKKE! Prøve igen!");
+                //Console.ResetColor();
+                //Console.ReadKey();
+                //goto igen;
+
+            }
+
+            public void AflevereBog()
+            {
+                Console.Write("Aflevere Bog: ");
+                string bogtitel = Console.ReadLine();
+
+                foreach (var bog in bøger)
+                {
+                    if(bog.Titel == bogtitel)
+                    {
+                        
+                     Console.WriteLine(bog.Titel);
+                     Console.WriteLine(bog.erLånt);
+
+                     bog.erLånt = false;
+
+                     Console.WriteLine(bog.erLånt);
+
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("øv");
+                        break;
+                    }
+                           
+                }
             }
 
 
 
-            public void FåBogInfo(string bogTitel)
-
+            public void FåBogInfo()
             {
+                Console.Clear();
+                Console.WriteLine("Info om bogen");
+                Console.WriteLine("Tast ind bogens titel eller (2) for at vise alle bøger");
+                Console.Write("Tast: ");
+                string bogTitel = Console.ReadLine();
 
-                // Implementer logik for at få information om en bog her
-
+                foreach (var bog in bøger)
+                {
+                    if (bog.Titel == bogTitel)
+                    {
+                        Console.WriteLine($"Om '{bog.Titel}'\n Forfatter: {bog.Forfatter}\n Sider: {bog.Sider}\n Udgivelsesår: {bog.Udgivelsesår}\n er Lånt? {bog.erLånt}");
+                    }
+                    else if (bogTitel == "2") 
+                    {
+                        Console.WriteLine(bog.Titel);
+                    }
+                }
             }
 
         }
+
+        
+
+        
+
+
+
     }
 }
