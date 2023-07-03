@@ -383,7 +383,7 @@
                 
 
             }
-
+                //Console.WriteLine("Tak for at du aflevere bogen!");
             private Bog FindBog(string title)
             {
                 foreach(Bog bog in bøger)
@@ -435,4 +435,5 @@
 
 
     }
+}    }
 }
