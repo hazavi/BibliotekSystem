@@ -298,7 +298,6 @@
                
             }
 
-
             // Låne bog
             public void LåneBog()
             {
